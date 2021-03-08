@@ -17,11 +17,12 @@ app.post("/server", async (req: Request, res: Response, next: NextFunction) => {
   const incomingData: MqttData = req.body;
   await putToFile(incomingData);
   res.status(200).send("Added data to database!");
+  res.end();
 });
 
 app.get(
   "/server/data/all",
-  async (req: Request, res: Response, next: NextFunction) => {
+  (req: Request, res: Response, next: NextFunction) => {
     const data = readFileData();
     res.status(200).send(data);
   }
