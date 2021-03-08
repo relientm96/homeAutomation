@@ -1,1 +1,1 @@
-[{"temperature":"2"},{"temperature":"5"}]
+[{"message":"some initial message","timestamp":"111222"},{"data":"Some message on data","timstamp":"111"}]
