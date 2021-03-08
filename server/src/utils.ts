@@ -5,12 +5,13 @@ export interface MqttData {
   timestamp: string;
 }
 
-const _dataFilePath = "./data/data.json";
+const _dataFilePath = "/home/pi/Documents/homeAutomationData/data.json";
+//const _dataFilePath = "./data/data.json";
 
 const _writeFileData = async (toWriteData: MqttData[]) => {
-  fs.writeFile("./data/data_tmp.json", JSON.stringify(toWriteData), (err) => {
+  fs.writeFile("data_tmp.json", JSON.stringify(toWriteData), (err) => {
     if (err) throw err;
-    fs.rename("./data/data_tmp.json", _dataFilePath, () => {
+    fs.rename("data_tmp.json", _dataFilePath, () => {
       if (err) throw err;
       console.log("Successfully moved file");
     });
