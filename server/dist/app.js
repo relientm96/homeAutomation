@@ -27,11 +27,12 @@ app.post("/server", (req, res, next) => __awaiter(void 0, void 0, void 0, functi
     const incomingData = req.body;
     yield utils_1.putToFile(incomingData);
     res.status(200).send("Added data to database!");
+    res.end();
 }));
-app.get("/server/data/all", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+app.get("/server/data/all", (req, res, next) => {
     const data = utils_1.readFileData();
     res.status(200).send(data);
-}));
+});
 app.listen(PORT, () => {
     console.log(`Server started at http://localhost:${PORT}`);
 });

@@ -27,14 +27,20 @@ const _writeFileData = (toWriteData) => __awaiter(void 0, void 0, void 0, functi
     });
 });
 const readFileData = () => {
+    console.log("Attempting to read file from FUNCTION");
     const data = fs_1.default.readFileSync(_dataFilePath).toString();
     const parsedData = JSON.parse(data);
+    console.log("Finished reading data from FUNCTION");
     return parsedData;
 };
 exports.readFileData = readFileData;
 const putToFile = (incomingData) => {
+    console.log("Attempting to read file data");
     const currentData = exports.readFileData();
+    console.log("Finished reading file data", currentData);
     const newDataList = [...currentData, incomingData];
+    console.log("Attempting to write new data");
     _writeFileData(newDataList);
+    console.log("Finished request");
 };
 exports.putToFile = putToFile;
