@@ -15,7 +15,7 @@ DHT dhtInstance(DHT_PIN, DHT11, 1);
 char ssid[] = "Belong3D3DC4";      
 char pass[] = "tkab4pau6uqx";
 
-const char* mqtt_broker = "10.0.0.33";
+const char* mqtt_broker = "10.0.0.36";
 
 WiFiClient espClient;
 PubSubClient client(espClient);
