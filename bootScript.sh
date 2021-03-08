@@ -29,7 +29,7 @@ touch /home/pi/Documents/logs/mqttBridge.log
 # Run the http express server
 # Running on port 10131
 echo "Running express http server"
-node $(pwd)/server/dist/app.js > /home/pi/Documents/logs/server.log 2>&1 &
+npm start --prefix $(pwd)/server > /home/pi/Documents/logs/server.log 2>&1 &
 
 # Run the React front end dashboard
 # Running on port 10130
