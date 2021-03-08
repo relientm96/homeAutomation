@@ -20,15 +20,15 @@ const PORT = 10131;
 // Middlewares
 app.use(body_parser_1.default.urlencoded({ extended: true }));
 app.use(body_parser_1.default.json());
-app.get("/", (req, res, next) => {
+app.get("/server", (req, res, next) => {
     res.send("Hello world! This is TSC");
 });
-app.post("/", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+app.post("/server", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const incomingData = req.body;
     yield utils_1.putToFile(incomingData);
     res.status(200).send("Added data to database!");
 }));
-app.get("/data/all", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+app.get("/server/data/all", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const data = utils_1.readFileData();
     res.status(200).send(data);
 }));
