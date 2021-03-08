@@ -14,12 +14,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.putToFile = exports.readFileData = void 0;
 const fs_1 = __importDefault(require("fs"));
-const _dataFilePath = "./data/data.json";
+const _dataFilePath = "/home/pi/Documents/homeAutomationData/data.json";
+//const _dataFilePath = "./data/data.json";
 const _writeFileData = (toWriteData) => __awaiter(void 0, void 0, void 0, function* () {
-    fs_1.default.writeFile("./data/data_tmp.json", JSON.stringify(toWriteData), (err) => {
+    fs_1.default.writeFile("data_tmp.json", JSON.stringify(toWriteData), (err) => {
         if (err)
             throw err;
-        fs_1.default.rename("./data/data_tmp.json", _dataFilePath, () => {
+        fs_1.default.rename("data_tmp.json", _dataFilePath, () => {
             if (err)
                 throw err;
             console.log("Successfully moved file");
