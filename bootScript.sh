@@ -29,13 +29,13 @@ touch /home/pi/Documents/logs/mqttBridge.log
 # Run the http express server
 # Running on port 10131
 echo "Running express http server"
-npm start --prefix $(pwd)/server > /home/pi/Documents/logs/server.log 2>&1 &
+/usr/local/bin/npm start --prefix /home/pi/Documents/homeAutomation/server > /home/pi/Documents/logs/server.log 2>&1 &
 
 # Run the React front end dashboard
 # Running on port 10130
 echo "Running react dashboard"
-python3 -m http.server 10130 --directory $(pwd)/dashboard/build/ > /home/pi/Documents/logs/ 2>&1 &
+/usr/bin/python3 -m http.server 10130 --directory /home/pi/Documents/homeAutomation/dashboard/build/ > /home/pi/Documents/logs/ 2>&1 &
 
 # Run the mqtt to http bridge
 echo "Running mqtt bridge script"
-python3 $(pwd)/mqttToHttpBridge/mqttToHttp.py > /home/pi/Documents/logs/mqttBridge.log 2>&1 &
+/usr/bin/python3 /home/pi/Documents/homeAutomation/mqttToHttpBridge/mqttToHttp.py > /home/pi/Documents/logs/mqttBridge.log 2>&1 &
