@@ -34,7 +34,7 @@ echo "Running express http server"
 # Run the React front end dashboard
 # Running on port 10130
 echo "Running react dashboard"
-/usr/bin/python3 -m http.server 10130 --directory /home/pi/Documents/homeAutomation/dashboard/build/ > /home/pi/Documents/logs/ 2>&1 &
+/usr/bin/python3 -m http.server 10130 --directory /home/pi/Documents/homeAutomation/dashboard/build/ > /home/pi/Documents/logs/dashboard.log 2>&1 &
 
 # Run the mqtt to http bridge
 echo "Running mqtt bridge script"
