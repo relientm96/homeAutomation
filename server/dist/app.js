@@ -32,6 +32,6 @@ app.get("/data/all", (req, res, next) => __awaiter(void 0, void 0, void 0, funct
     const data = utils_1.readFileData();
     res.status(200).send(data);
 }));
-app.listen(PORT, () => {
-    console.log(`Server started at http://localhost:${PORT}`);
+app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Server started at http://0.0.0.0:${PORT}`);
 });
