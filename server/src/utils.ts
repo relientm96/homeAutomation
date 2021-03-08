@@ -1,33 +1,30 @@
 import fs from "fs";
 
-const _rollingUpdate = () => {
-    console.log("Rolling updates");
-    // Reads all data points, remove oldest one
+export interface MqttData {
+  data: string;
+  timestamp: string;
 }
 
-const _readFileData = async () => {
-    fs.readFile('./data/data.json', function(err, data) {
-        if (err) throw err;
-        else {
-            return JSON.parse(data.toString());
-        }
+const _dataFilePath = "./data/data.json";
+
+const _writeFileData = async (toWriteData: MqttData[]) => {
+  fs.writeFile("./data/data_tmp.json", JSON.stringify(toWriteData), (err) => {
+    if (err) throw err;
+    fs.rename("./data/data_tmp.json", _dataFilePath, () => {
+      if (err) throw err;
+      console.log("Successfully moved file");
     });
-}
+  });
+};
 
-const _writeFileData = async (toWriteData: Object) => {
-    fs.writeFile('./data/data_tmp.json', JSON.stringify(toWriteData), (err) => {
-        if (err) throw err;
-        fs.rename('./data/data_tmp.json', './data/data.json', () => {
-            if (err) throw err;
-            console.log("Successfully moved file")
-        });
-    });
-}
+export const readFileData = (): MqttData[] => {
+  const data = fs.readFileSync(_dataFilePath).toString();
+  const parsedData = JSON.parse(data);
+  return parsedData;
+};
 
-async function putToFile(incomingData: any){
-    // Before we start, check and see how many points we have
-    // if more than > 20 data points, delete the oldest one
-    _rollingUpdate();
-}
-
-export {putToFile};
+export const putToFile = (incomingData: MqttData) => {
+  const currentData = readFileData();
+  const newDataList = [...currentData, incomingData];
+  _writeFileData(newDataList);
+};
