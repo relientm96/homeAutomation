@@ -10,9 +10,16 @@ def validateWeather(msg):
 
 
 def sendHttpRequest(data):
-    # Send a post request to home automation server
+    # Send a post request of data from device to home automation server
     data = parse.urlencode(data).encode()
-    req = request.Request("http://localhost:10131/", data=data)
+    req = request.Request("http://10.0.0.36:8080/server", data=data)
+    resp = request.urlopen(req)
+
+
+def sendHttpConnectionRequest(data):
+    # Send a post request to home automation server when a device connects
+    data = parse.urlencode(data).encode()
+    req = request.Request("http://10.0.0.36:8080/server/devices", data=data)
     resp = request.urlopen(req)
 
 
@@ -27,6 +34,12 @@ def on_message(client, userdata, msg):
     print(msg.topic + " " + str(msg.payload))
     timeNow = datetime.datetime.now().isoformat()
     parsedMessage = msg.payload.decode("utf-8")
+    if "status" in str(msg.topic):
+        # This is the topic used to detect if device connection notifications
+        deviceName = parsedMessage.split('_')[0]
+        data = {"message": deviceName, "timestamp": str(timeNow)}
+        sendHttpConnectionRequest(data)
+
     if "outside" in str(msg.topic):
         if validateWeather(parsedMessage):
             # Obtain temperature type

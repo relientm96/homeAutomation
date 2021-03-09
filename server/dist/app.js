@@ -20,17 +20,34 @@ const PORT = 10131;
 // Middlewares
 app.use(body_parser_1.default.urlencoded({ extended: true }));
 app.use(body_parser_1.default.json());
-app.get("/server", (req, res, next) => {
-    res.send("Hello world! This is TSC");
-});
+// End point to post data from mqtt devices
 app.post("/server", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const incomingData = req.body;
-    yield utils_1.putToFile(incomingData);
+    utils_1.putToFile(incomingData);
     res.status(200).send("Added data to database!");
     res.end();
 }));
-app.get("/server/data/all", (req, res, next) => {
-    const data = utils_1.readFileData();
+// Handle post routes from devices connecting to network
+app.post("/server/devices", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const device_notif = req.body;
+    utils_1.registerDevice(device_notif);
+    // Reading device data and writing
+    res.status(200).send("Got a device connect notification!");
+    res.end();
+}));
+app.get("/server", (req, res, next) => {
+    res.send("Hello world! This is TSC");
+});
+app.get("/server/data/temperature", (req, res, next) => {
+    const data = utils_1.readTemperature();
+    res.status(200).send(data);
+});
+app.get("/server/data/humidity", (req, res, next) => {
+    const data = utils_1.readHumidity();
+    res.status(200).send(data);
+});
+app.get("/server/data/devices", (req, res, next) => {
+    const data = utils_1.readDevices();
     res.status(200).send(data);
 });
 app.listen(PORT, () => {

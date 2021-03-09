@@ -7,7 +7,7 @@
     "start": "node dist/app.js",
     "dev": "nodemon src/app.ts",
     "build": "tsc -p .",
-    "deploy": "yarn build && scp -r dist/ pi@raspberrypi:/home/pi/Documents/homeAutomation/server/"
+    "deploy": "yarn build && scp -r dist/ pi@10.0.0.36:/home/pi/Documents/homeAutomation/server/"
   },
   "keywords": [],
   "author": "",

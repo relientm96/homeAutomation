@@ -64,7 +64,7 @@ void reconnect() {
         if (client.connect(clientId.c_str())) {
             Serial.println("connected");
             // Once connected, publish an announcement...
-            client.publish("outside", "Reconnected!");
+            client.publish("status", "weather_alive");
             // Susbcribe to led 
             client.subscribe("led_outside");
         } else {
@@ -100,8 +100,8 @@ void loop(){
     float humidData = dhtInstance.readHumidity(false);
 
     unsigned long now = millis();
-    // Post every 2 seconds
-    if (now - lastMsg > 2000) {
+    // Post every 10 seconds
+    if (now - lastMsg > 10000) {
         lastMsg = now;
         snprintf(msg, MSG_BUFFER_SIZE, "temp: %3.3f, humid: %3.3f", tempData, humidData);
         client.publish("outside", msg);

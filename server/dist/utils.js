@@ -12,36 +12,54 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.putToFile = exports.readFileData = void 0;
+exports.putToFile = exports.readDevices = exports.readTemperature = exports.readHumidity = exports.registerDevice = void 0;
 const fs_1 = __importDefault(require("fs"));
-const _dataFilePath = "/home/pi/Documents/homeAutomationData/data.json";
-//const _dataFilePath = "./data/data.json";
-const _writeFileData = (toWriteData) => __awaiter(void 0, void 0, void 0, function* () {
+const _dataFilePath = "/home/pi/Documents/homeAutomationData/";
+const _humidDataFile = `${_dataFilePath}/data_humid.json`;
+const _tempDataFile = `${_dataFilePath}/data_temp.json`;
+const _deviceFile = `${_dataFilePath}/data_device.json`;
+const _writeFileData = (toWriteData, filePathInput) => __awaiter(void 0, void 0, void 0, function* () {
     fs_1.default.writeFile("data_tmp.json", JSON.stringify(toWriteData), (err) => {
         if (err)
             throw err;
-        fs_1.default.rename("data_tmp.json", _dataFilePath, () => {
+        fs_1.default.rename("data_tmp.json", filePathInput, () => {
             if (err)
                 throw err;
             console.log("Successfully moved file");
         });
     });
 });
-const readFileData = () => {
-    console.log("Attempting to read file from FUNCTION");
-    const data = fs_1.default.readFileSync(_dataFilePath).toString();
+const _readFileData = (filepath) => {
+    const data = fs_1.default.readFileSync(filepath).toString();
     const parsedData = JSON.parse(data);
-    console.log("Finished reading data from FUNCTION");
     return parsedData;
 };
-exports.readFileData = readFileData;
+const registerDevice = (deviceNotif) => {
+    const currentDeviceList = _readFileData(_deviceFile);
+    const newDeviceList = [...currentDeviceList, deviceNotif];
+    _writeFileData(newDeviceList, _deviceFile);
+};
+exports.registerDevice = registerDevice;
+const readHumidity = () => _readFileData(_humidDataFile);
+exports.readHumidity = readHumidity;
+const readTemperature = () => _readFileData(_tempDataFile);
+exports.readTemperature = readTemperature;
+const readDevices = () => _readFileData(_deviceFile);
+exports.readDevices = readDevices;
 const putToFile = (incomingData) => {
-    console.log("Attempting to read file data");
-    const currentData = exports.readFileData();
-    console.log("Finished reading file data", currentData);
+    let filePath = "";
+    if (incomingData["type"] === "humidity") {
+        filePath = _humidDataFile;
+    }
+    else if (incomingData["type"] === "temperature") {
+        filePath = _tempDataFile;
+    }
+    else {
+        console.log("Unknown message type");
+        return;
+    }
+    const currentData = _readFileData(filePath);
     const newDataList = [...currentData, incomingData];
-    console.log("Attempting to write new data");
-    _writeFileData(newDataList);
-    console.log("Finished request");
+    _writeFileData(newDataList, filePath);
 };
 exports.putToFile = putToFile;
