@@ -1,0 +1,3 @@
+# Ignoring data files
+data/
+data/*
