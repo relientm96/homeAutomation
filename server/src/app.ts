@@ -15,7 +15,7 @@ app.get("/server", (req: Request, res: Response, next: NextFunction) => {
 
 app.post("/server", async (req: Request, res: Response, next: NextFunction) => {
   const incomingData: MqttData = req.body;
-  await putToFile(incomingData);
+  putToFile(incomingData);
   res.status(200).send("Added data to database!");
   res.end();
 });
