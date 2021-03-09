@@ -3,6 +3,12 @@ import paho.mqtt.client as mqtt
 from urllib import request, parse
 
 
+def validateWeather(msg):
+    if "nan" in msg or "Reconnected!" in msg:
+        return False
+    return True
+
+
 def sendHttpRequest(data):
     # Send a post request to home automation server
     data = parse.urlencode(data).encode()
@@ -20,13 +26,22 @@ def on_message(client, userdata, msg):
     # The callback for when a PUBLISH message is received from the server.
     print(msg.topic + " " + str(msg.payload))
     timeNow = datetime.datetime.now().isoformat()
+    parsedMessage = msg.payload.decode("utf-8")
     if "outside" in str(msg.topic):
-        data = {"message": msg.payload.decode(
-            "utf-8"), "timestamp": str(timeNow), "type": "weather"}
-        sendHttpRequest(data)
+        if validateWeather(parsedMessage):
+            # Obtain temperature type
+            tempValue = parsedMessage.split(',')[0].split(':')[1].strip()
+            data = {"message": tempValue,
+                    "timestamp": str(timeNow), "type": "temperature"}
+            sendHttpRequest(data)
+            # Repeat for humid type
+            humidValue = parsedMessage.split(',')[1].split(':')[1].strip()
+            data = {"message": humidValue,
+                    "timestamp": str(timeNow), "type": "humidity"}
+            sendHttpRequest(data)
     if "led" in str(msg.topic):
-        data = {"message": msg.payload.decode(
-            "utf-8"), "timestamp": str(timeNow), "type": "led"}
+        data = {"message": parsedMessage,
+                "timestamp": str(timeNow), "type": "led"}
         sendHttpRequest(data)
 
 
