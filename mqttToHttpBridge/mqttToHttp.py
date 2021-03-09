@@ -34,12 +34,15 @@ def on_message(client, userdata, msg):
     print(msg.topic + " " + str(msg.payload))
     timeNow = datetime.datetime.now().isoformat()
     parsedMessage = msg.payload.decode("utf-8")
+<<<<<<< HEAD
     if "status" in str(msg.topic):
         # This is the topic used to detect if device connection notifications
         deviceName = parsedMessage.split('_')[0]
         data = {"message": deviceName, "timestamp": str(timeNow)}
         sendHttpConnectionRequest(data)
 
+=======
+>>>>>>> 2f92c09f140c5604e3446d23cd02e625d792c507
     if "outside" in str(msg.topic):
         if validateWeather(parsedMessage):
             # Obtain temperature type
